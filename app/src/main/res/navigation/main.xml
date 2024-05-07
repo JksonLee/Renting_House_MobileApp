@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profilePageFragment"
             app:destination="@id/profilePageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoredFragment"
@@ -49,6 +52,15 @@
         <action
             android:id="@+id/action_favoredFragment_to_roomDetailFragment"
             app:destination="@id/roomDetailFragment" />
+        <action
+            android:id="@+id/action_favoredFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_favoredFragment_self"
+            app:destination="@id/favoredFragment" />
+        <action
+            android:id="@+id/action_favoredFragment_to_profilePageFragment"
+            app:destination="@id/profilePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/profilePageFragment"
@@ -61,12 +73,28 @@
         <action
             android:id="@+id/action_profilePageFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profilePageFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_profilePageFragment_self"
+            app:destination="@id/profilePageFragment" />
+        <action
+            android:id="@+id/action_profilePageFragment_to_favoredFragment"
+            app:destination="@id/favoredFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomDetailFragment"
         android:name="com.example.lifeafterdom_assignment.RoomDetailFragment"
         android:label="fragment_room_detail"
-        tools:layout="@layout/fragment_room_detail" />
+        tools:layout="@layout/fragment_room_detail" >
+        <action
+            android:id="@+id/action_roomDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_roomDetailFragment_self"
+            app:destination="@id/roomDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.example.lifeafterdom_assignment.EditProfileFragment"
