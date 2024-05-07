@@ -91,9 +91,6 @@
         <action
             android:id="@+id/action_roomDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_roomDetailFragment_self"
-            app:destination="@id/roomDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
