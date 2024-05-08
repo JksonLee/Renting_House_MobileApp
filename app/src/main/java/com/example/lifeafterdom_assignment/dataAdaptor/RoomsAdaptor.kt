@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.R
 import com.example.lifeafterdom_assignment.data.Rooms
 
-class RoomsAdaptor(private val roomsList: List<Rooms>): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+class RoomsAdaptor(private var roomsList: List<Rooms>): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
     class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView){
         val imgRDHRoomImg : ImageView = itemView.findViewById(R.id.imgRDHRoomImg)
         val tvRDHRoomName : TextView = itemView.findViewById(R.id.tvRDHRoomName)
@@ -19,7 +19,6 @@ class RoomsAdaptor(private val roomsList: List<Rooms>): RecyclerView.Adapter <Ro
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsDisplayHolder {
         val itemView = LayoutInflater.from(parent.context).inflate( R.layout.rooms_display_holder, parent, false )
-
         return RoomsDisplayHolder(itemView)
     }
 
@@ -29,9 +28,14 @@ class RoomsAdaptor(private val roomsList: List<Rooms>): RecyclerView.Adapter <Ro
 
     override fun onBindViewHolder(holder: RoomsDisplayHolder, position: Int) {
         val currentItem = roomsList[position]
-//        holder.imgRDHRoomImg = currentItem.image
+//        holder.imgRDHRoomImg.setImageResource(currentItem.image)
         holder.tvRDHRoomName.text = currentItem.name
         holder.tvRDHPrice.text = "RM " + currentItem.price.toString()
         holder.tvRDHAddress.text = currentItem.address
+    }
+
+    fun setFilteredList(roomsList: List<Rooms>){
+        this.roomsList = roomsList
+        notifyDataSetChanged()
     }
 }
