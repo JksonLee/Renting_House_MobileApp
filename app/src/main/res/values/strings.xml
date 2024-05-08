@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">LifeAfterDom_Assignment</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="genderList">
+        <item> Male Roommate </item>
+        <item> Female Roommate </item>
+    </string-array>
+    <string-array name="budgetList">
+        <item> Less Than RM500  </item>
+        <item> RM500 to RM799 </item>
+        <item> RM800 to RM1000 </item>
+        <item> Above RM1000 </item>
+    </string-array>
 </resources>
