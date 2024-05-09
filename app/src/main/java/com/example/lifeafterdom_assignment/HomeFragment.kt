@@ -111,19 +111,22 @@ class HomeFragment : Fragment() {
         val btnProfile : Button = view.findViewById(R.id.btnProfile)
 
         btnHome.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentSelf()
+            val action =
+                com.example.lifeafterdom_assignment.HomeFragmentDirections.actionHomeFragmentSelf()
 
             Navigation.findNavController(view).navigate(action)
         }
 
         btnFavored.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToFavoredFragment()
+            val action =
+                com.example.lifeafterdom_assignment.HomeFragmentDirections.actionHomeFragmentToFavoredFragment()
 
             Navigation.findNavController(view).navigate(action)
         }
 
         btnProfile.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToProfilePageFragment()
+            val action =
+                com.example.lifeafterdom_assignment.HomeFragmentDirections.actionHomeFragmentToProfilePageFragment()
 
             Navigation.findNavController(view).navigate(action)
         }
@@ -133,18 +136,18 @@ class HomeFragment : Fragment() {
 
     //Add new Record into Recommended RecyclerView
     private fun addDataToRecommendedList(){
-        roomListRecommend.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "Is a single room", 4, 2, 1500, "Male", 1))
-        roomListRecommend.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "Is a single room", 3, 2, 1600, "Female", 2))
-        roomListRecommend.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "Is a double room", 4, 2, 1700, "Male", 1))
-        roomListRecommend.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "Is a double room", 5, 2, 1800, "Female", 2))
+        roomListRecommend.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
+        roomListRecommend.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
+        roomListRecommend.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
+        roomListRecommend.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
     }
 
     //Add new Record into Others RecyclerView
     private fun addDataToOthersList(){
-        roomListOthers.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "Is a single room", 4, 2, 1500, "Male", 1))
-        roomListOthers.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "Is a single room", 3, 2, 1600, "Female", 2))
-        roomListOthers.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "Is a double room", 4, 2, 1700, "Male", 1))
-        roomListOthers.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "Is a double room", 5, 2, 1800, "Female", 2))
+        roomListOthers.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
+        roomListOthers.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
+        roomListOthers.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
+        roomListOthers.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
     }
 
     //Filter RecyclerView Record By Address

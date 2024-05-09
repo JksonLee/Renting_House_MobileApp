@@ -37,7 +37,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/rose_brown"
+            android:textColor="@color/white"
             android:text="Home" />
 
         <Button
@@ -45,7 +46,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/rose_brown"
+            android:textColor="@color/white"
             android:text="Favored" />
 
         <Button
@@ -53,7 +55,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/rose_brown"
+            android:textColor="@color/white"
             android:text="Profile" />
 
     </LinearLayout>
@@ -65,9 +68,10 @@
         android:layout_marginTop="9dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvFavoredTitle"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-2dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFRomm"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.navigation.Navigation
+import com.example.lifeafterdom_assignment.R
 
 class RoomDetailFragment : Fragment() {
     override fun onCreateView(
@@ -19,7 +20,8 @@ class RoomDetailFragment : Fragment() {
         val ibtnBack : ImageButton = view.findViewById(R.id.ibtnBack)
 
         ibtnBack.setOnClickListener{
-            val action = RoomDetailFragmentDirections.actionRoomDetailFragmentToHomeFragment()
+            val action =
+                com.example.lifeafterdom_assignment.RoomDetailFragmentDirections.actionRoomDetailFragmentToHomeFragment()
 
             Navigation.findNavController(view).navigate(action)
         }

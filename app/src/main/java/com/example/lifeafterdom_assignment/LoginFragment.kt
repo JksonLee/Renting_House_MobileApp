@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
+import com.example.lifeafterdom_assignment.R
 
 class LoginFragment : Fragment() {
     override fun onCreateView(
@@ -19,7 +20,8 @@ class LoginFragment : Fragment() {
         val btnLogin: Button = view.findViewById(R.id.btnLogin)
 
         btnLogin.setOnClickListener() {
-            val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+            val action =
+                com.example.lifeafterdom_assignment.LoginFragmentDirections.actionLoginFragmentToHomeFragment()
 
             Navigation.findNavController(view).navigate(action)
         }
