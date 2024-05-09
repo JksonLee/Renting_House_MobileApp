@@ -9,19 +9,20 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.data.Rooms
 import com.example.lifeafterdom_assignment.dataAdaptor.RoomsAdaptor
 import java.util.Locale
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
     private lateinit var searchRoom : SearchView
     private lateinit var recyclerViewRecommend : RecyclerView
     private lateinit var recyclerViewOthers : RecyclerView
-    private lateinit var adaptor: RoomsAdaptor
-    private var roomListRecommend = ArrayList<Rooms>()
-    private var roomListOthers = ArrayList<Rooms>()
+    private lateinit var adaptor : RoomsAdaptor
+    private lateinit var roomListRecommend : List<Rooms>
+    private lateinit var roomListOthers : List<Rooms>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,7 +54,7 @@ class HomeFragment : Fragment() {
         addDataToRecommendedList()
 
         // Display RecyclerView
-        adaptor = RoomsAdaptor(roomListRecommend)
+        adaptor = RoomsAdaptor(roomListRecommend,this)
         recyclerViewRecommend.adapter = adaptor
 
         // Filter By Address
@@ -87,7 +88,7 @@ class HomeFragment : Fragment() {
         addDataToOthersList()
 
         // Display RecyclerView
-        adaptor = RoomsAdaptor(roomListOthers)
+        adaptor = RoomsAdaptor(roomListOthers,this)
         recyclerViewOthers.adapter = adaptor
 
         // Search Room Name
@@ -99,7 +100,6 @@ class HomeFragment : Fragment() {
             override fun onQueryTextChange(newText: String): Boolean {
                 // FilterList
                 filterByName(newText)
-
                 return true
             }
         })
@@ -136,19 +136,21 @@ class HomeFragment : Fragment() {
 
     //Add new Record into Recommended RecyclerView
     private fun addDataToRecommendedList(){
-        roomListRecommend.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
-        roomListRecommend.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
-        roomListRecommend.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
-        roomListRecommend.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
-    }
+        roomListRecommend = listOf(
+            Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1),
+            Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2),
+            Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1),
+            Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2),
+        ) }
 
     //Add new Record into Others RecyclerView
     private fun addDataToOthersList(){
-        roomListOthers.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
-        roomListOthers.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
-        roomListOthers.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
-        roomListOthers.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
-    }
+        roomListOthers = listOf(
+            Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1),
+            Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2),
+            Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1),
+            Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2),
+        )}
 
     //Filter RecyclerView Record By Address
     private fun filterByAddress(newText : String){
@@ -182,5 +184,11 @@ class HomeFragment : Fragment() {
                 adaptor.setFilteredList(filteredList)
             }
         }
+    }
+
+    override fun itemClick(position: Int) {
+        val room = roomListRecommend[position]
+
+        findNavController().navigate(R.id.action_homeFragment_to_roomDetailFragment)
     }
 }

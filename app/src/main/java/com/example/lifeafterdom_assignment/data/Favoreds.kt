@@ -1,4 +1,7 @@
 package com.example.lifeafterdom_assignment.data
 
-class Favoreds {
-}
+data class Favoreds (
+    val favoredID:Int,
+    val roomID:Int,
+    val userID:Int
+)

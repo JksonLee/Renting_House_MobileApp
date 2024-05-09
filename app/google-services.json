@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646719352708",
+    "project_id": "lifeafterdom-assignment-af094",
+    "storage_bucket": "lifeafterdom-assignment-af094.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646719352708:android:0bab05f95a791320f577d1",
+        "android_client_info": {
+          "package_name": "com.example.lifeafterdom_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQcf_1GLLhuO3AUAapRGBI3-VH6Iy5vj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

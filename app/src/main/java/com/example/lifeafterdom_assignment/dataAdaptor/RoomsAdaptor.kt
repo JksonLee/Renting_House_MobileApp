@@ -9,12 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.R
 import com.example.lifeafterdom_assignment.data.Rooms
 
-class RoomsAdaptor(private var roomsList: List<Rooms>): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
-    class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+class RoomsAdaptor(private var roomsList: List<Rooms>, private val listener: onItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+    inner class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val imgRDHRoomImg : ImageView = itemView.findViewById(R.id.imgRDHRoomImg)
         val tvRDHRoomName : TextView = itemView.findViewById(R.id.tvRDHRoomName)
         val tvRDHPrice : TextView = itemView.findViewById(R.id.tvRDHPrice)
         val tvRDHAddress : TextView = itemView.findViewById(R.id.tvRDHAddress)
+
+        // OnClickItem Function
+        init {
+            itemView.setOnClickListener(this)
+        }
+        override fun onClick(v: View?) {
+            val position : Int = adapterPosition
+            if(position != RecyclerView.NO_POSITION){
+                listener.itemClick(position)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsDisplayHolder {
@@ -37,5 +48,9 @@ class RoomsAdaptor(private var roomsList: List<Rooms>): RecyclerView.Adapter <Ro
     fun setFilteredList(roomsList: List<Rooms>){
         this.roomsList = roomsList
         notifyDataSetChanged()
+    }
+
+    interface onItemClickListener{
+        fun itemClick(position: Int)
     }
 }
