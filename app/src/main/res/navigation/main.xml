@@ -91,6 +91,9 @@
         <action
             android:id="@+id/action_roomDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="roomSelectedItem"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"

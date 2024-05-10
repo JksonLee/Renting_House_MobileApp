@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.R
 import com.example.lifeafterdom_assignment.data.Rooms
 
-class RoomsAdaptor(private var roomsList: List<Rooms>, private val listener: onItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener: onItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+
     inner class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val imgRDHRoomImg : ImageView = itemView.findViewById(R.id.imgRDHRoomImg)
         val tvRDHRoomName : TextView = itemView.findViewById(R.id.tvRDHRoomName)
@@ -45,7 +46,7 @@ class RoomsAdaptor(private var roomsList: List<Rooms>, private val listener: onI
         holder.tvRDHAddress.text = currentItem.address
     }
 
-    fun setFilteredList(roomsList: List<Rooms>){
+    fun setFilteredList(roomsList: ArrayList<Rooms>){
         this.roomsList = roomsList
         notifyDataSetChanged()
     }

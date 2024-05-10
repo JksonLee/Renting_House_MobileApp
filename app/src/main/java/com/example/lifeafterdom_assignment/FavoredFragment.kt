@@ -19,7 +19,7 @@ import java.util.Locale
 class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
     private lateinit var recyclerViewFavored : RecyclerView
     private lateinit var adaptor : RoomsAdaptor
-    private lateinit var roomListFavored : List<Rooms>
+    private lateinit var roomListFavored : ArrayList<Rooms>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,16 +44,16 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
 
         recyclerViewFavored = view.findViewById(R.id.rvFRoom)
 
-        // Set Size and Context of RecyclerView
-        recyclerViewFavored.setHasFixedSize(true)
         recyclerViewFavored.setLayoutManager(LinearLayoutManager(view.getContext()))
+        recyclerViewFavored.setHasFixedSize(true)
+
+        roomListFavored = arrayListOf()
+
+        adaptor = RoomsAdaptor(roomListFavored,this)
+        recyclerViewFavored.adapter = adaptor
 
         // Add Record Into RecyclerView
         addDataToFavoredList()
-
-        // Display RecyclerView
-        adaptor = RoomsAdaptor(roomListFavored,this)
-        recyclerViewFavored.adapter = adaptor
 
         // Filter By Address
         filterByAddress("Setapak")
@@ -90,12 +90,11 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
 
     //Add new Record into Others RecyclerView
     private fun addDataToFavoredList(){
-        roomListFavored = listOf(
-            Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1),
-            Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2),
-            Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1),
-            Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2),
-        )}
+        roomListFavored.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
+        roomListFavored.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
+        roomListFavored.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
+        roomListFavored.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
+    }
 
     //Filter RecyclerView Record By Address
     private fun filterByAddress(newText : String){
@@ -114,8 +113,10 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
     }
 
     override fun itemClick(position: Int) {
-        val room = roomListFavored[position]
+        val roomSelectedList = roomListFavored[position]
 
-        findNavController().navigate(R.id.action_favoredFragment_to_roomDetailFragment)
+        val action = FavoredFragmentDirections.actionFavoredFragmentToRoomDetailFragment(roomSelectedList.roomID)
+
+        findNavController().navigate(action)
     }
 }
