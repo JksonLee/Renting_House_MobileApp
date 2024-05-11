@@ -13,6 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.data.Rooms
 import com.example.lifeafterdom_assignment.dataAdaptor.RoomsAdaptor
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.Locale
 
 
@@ -20,43 +25,13 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
     private lateinit var recyclerViewFavored : RecyclerView
     private lateinit var adaptor : RoomsAdaptor
     private lateinit var roomListFavored : ArrayList<Rooms>
+    private lateinit var dbRef: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favored, container, false)
-
-
-        // Display Recycle View
-//        val roomList : List<Rooms> = listOf(
-//            Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room",  "Male", 1),
-//            Rooms(2, "PV12", "Setapak, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2),
-//            Rooms(3, "PV15", "Setapak, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1),
-//            Rooms(4, "PV16", "Setapak, 50200 Kuala Lumpur", 740.50, "double","Is a double room",  "Female", 2),
-//        )
-//        val recyclerView: RecyclerView = view.findViewById(R.id.rvFRomm)
-//        recyclerView.adapter = RoomsAdaptor(roomList,this)
-//
-//        recyclerView.setLayoutManager(LinearLayoutManager(view.getContext()))
-//
-//        recyclerView.setHasFixedSize(true)
-
-        recyclerViewFavored = view.findViewById(R.id.rvFRoom)
-
-        recyclerViewFavored.setLayoutManager(LinearLayoutManager(view.getContext()))
-        recyclerViewFavored.setHasFixedSize(true)
-
-        roomListFavored = arrayListOf()
-
-        adaptor = RoomsAdaptor(roomListFavored,this)
-        recyclerViewFavored.adapter = adaptor
-
-        // Add Record Into RecyclerView
-        addDataToFavoredList()
-
-        // Filter By Address
-        filterByAddress("Setapak")
 
 
         // Navigation Button
@@ -85,31 +60,56 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
             Navigation.findNavController(view).navigate(action)
         }
 
+
+        // Favored
+        // Display User Favored List
+        recyclerViewFavored = view.findViewById(R.id.rvFRoom)
+
+        recyclerViewFavored.setLayoutManager(LinearLayoutManager(view.getContext()))
+        recyclerViewFavored.setHasFixedSize(true)
+
+        roomListFavored = arrayListOf()
+
+//        adaptor = RoomsAdaptor(roomListFavored,this)
+//        recyclerViewFavored.adapter = adaptor
+
+        // Add Record Into RecyclerView
+        fetchDataToFavoredList()
+
         return view
     }
 
     //Add new Record into Others RecyclerView
-    private fun addDataToFavoredList(){
-        roomListFavored.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
-        roomListFavored.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
-        roomListFavored.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
-        roomListFavored.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
-    }
+    private fun fetchDataToFavoredList(){
+        dbRef = FirebaseDatabase.getInstance().getReference("Favoreds")
+        dbRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                roomListFavored.clear()
+                if(snapshot.exists()) {
+                    for(roomsSnap in snapshot.children){
+                        roomListFavored.add(Rooms(roomsSnap.child("roomID").value.toString().toInt(),
+                            roomsSnap.child("name").value.toString(),
+                            roomsSnap.child("address").value.toString(),
+                            roomsSnap.child("price").value.toString().toDouble(),
+                            roomsSnap.child("type").value.toString(),
+                            roomsSnap.child("description").value.toString(),
+                            roomsSnap.child("roommate").value.toString(),
+                            roomsSnap.child("agentID").value.toString().toInt()))
+                    }
+                    // Filter By User ID
 
-    //Filter RecyclerView Record By Address
-    private fun filterByAddress(newText : String){
-        val filteredAddressList = ArrayList<Rooms>()
-        for(i in roomListFavored){
-            if(i.address.lowercase(Locale.ROOT).contains(newText.lowercase())){
-                filteredAddressList.add(i)
+
+                    // Update List
+//                    adaptor = RoomsAdaptor(roomListRecommend, this@HomeFragment)
+//                    recyclerViewRecommend.adapter = adaptor
+                }else {
+                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
-        if(filteredAddressList.isEmpty()){
-            Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show()
-        }
-        else{
-            adaptor.setFilteredList(filteredAddressList)
-        }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun itemClick(position: Int) {

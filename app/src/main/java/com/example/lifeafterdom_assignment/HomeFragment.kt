@@ -68,26 +68,21 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
 
 
 
+        // Recommended
         // Display Recycle View of Others (Using Another Method to do recycle view)
         recyclerViewRecommend = view.findViewById(R.id.rvHRecommend)
-        dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
 
-        recyclerViewRecommend.setHasFixedSize(true)
         recyclerViewRecommend.setLayoutManager(LinearLayoutManager(context))
+        recyclerViewRecommend.setHasFixedSize(true)
 
         roomListRecommend = arrayListOf()
 
-        adaptor = RoomsAdaptor(roomListRecommend,this)
-        recyclerViewRecommend.adapter = adaptor
-
         // Add Record Into RecyclerView
-        addDataToRecommendedList()
-
-        // Filter By Address
-//        filterByAddress("Setapak")
+        fetchDataToRecommendedList()
 
 
 
+        // Others
         // Display Recycle View of Others
         recyclerViewOthers = view.findViewById(R.id.rvHRoom)
         searchRoom = view.findViewById(R.id.svRoom)
@@ -97,11 +92,8 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
 
         roomListOthers = arrayListOf()
 
-        adaptor = RoomsAdaptor(roomListOthers,this)
-        recyclerViewOthers.adapter = adaptor
-
         // Add Record Into RecyclerView
-        addDataToOthersList()
+        fetchDataToOthersList()
 
         // Search Room Name
         searchRoom.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -114,50 +106,71 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                 return true
             }
         })
+
         return view
     }
 
     //Add new Record into Recommended RecyclerView
-    private fun addDataToRecommendedList(){
-//        roomListRecommend.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
-//        roomListRecommend.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
-//        roomListRecommend.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
-//        roomListRecommend.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
+    private fun fetchDataToRecommendedList(){
+        dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
         dbRef.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                var filteredIDList = ArrayList<Rooms>()
+                roomListRecommend.clear()
                 if(snapshot.exists()) {
                     for(roomsSnap in snapshot.children){
-//                        val room = roomsSnap.getValue(Rooms::class.java)
-//                            filteredIDList.add(roomsSnap.value as Rooms)
-                        Toast.makeText(context, roomsSnap.value.toString(), Toast.LENGTH_SHORT).show()
+                        roomListRecommend.add(Rooms(roomsSnap.child("roomID").value.toString().toInt(),
+                            roomsSnap.child("name").value.toString(),
+                            roomsSnap.child("address").value.toString(),
+                            roomsSnap.child("price").value.toString().toDouble(),
+                            roomsSnap.child("type").value.toString(),
+                            roomsSnap.child("description").value.toString(),
+                            roomsSnap.child("roommate").value.toString(),
+                            roomsSnap.child("agentID").value.toString().toInt()))
                     }
+                    // Filter By User Address
+                    filterByAddress("Wangsa Maju")
 
+                    // Update List
+//                    adaptor = RoomsAdaptor(roomListRecommend, this@HomeFragment)
+//                    recyclerViewRecommend.adapter = adaptor
                 }else {
                     Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
                 }
-//                    if(filteredIDList.isEmpty()){
-//                        Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
-//                    }
-//                    else{
-//                        adaptor.setFilteredList(filteredIDList)
-//                    }
-//                }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
             }
-
         })
     }
 
     //Add new Record into Others RecyclerView
-    private fun addDataToOthersList(){
-        roomListOthers.add(Rooms(1, "PV10", "Setapak, 50200 Kuala Lumpur", 440.50, "single","Is a single room", "Male", 1))
-        roomListOthers.add(Rooms(2, "PV12", "Wangsa Maju, 50200 Kuala Lumpur", 540.50, "single","Is a single room", "Female", 2))
-        roomListOthers.add(Rooms(3, "PV15", "Wangsa Maju, 50200 Kuala Lumpur", 640.50, "double","Is a double room", "Male", 1))
-        roomListOthers.add(Rooms(4, "PV16", "Wangsa Maju, 50200 Kuala Lumpur", 740.50, "double","Is a double room", "Female", 2))
+    private fun fetchDataToOthersList(){
+        dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
+        dbRef.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                roomListOthers.clear()
+                if(snapshot.exists()) {
+                    for(roomsSnap in snapshot.children){
+                        roomListOthers.add(Rooms(roomsSnap.child("roomID").value.toString().toInt(),
+                            roomsSnap.child("name").value.toString(),
+                            roomsSnap.child("address").value.toString(),
+                            roomsSnap.child("price").value.toString().toDouble(),
+                            roomsSnap.child("type").value.toString(),
+                            roomsSnap.child("description").value.toString(),
+                            roomsSnap.child("roommate").value.toString(),
+                            roomsSnap.child("agentID").value.toString().toInt()))
+                    }
+                    // Update List
+                    adaptor = RoomsAdaptor(roomListOthers, this@HomeFragment)
+                    recyclerViewOthers.adapter = adaptor
+                }else {
+                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     //Filter RecyclerView Record By Address
@@ -172,7 +185,8 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
             Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show()
         }
         else{
-            adaptor.setFilteredList(filteredAddressList)
+            adaptor = RoomsAdaptor(filteredAddressList, this@HomeFragment)
+            recyclerViewRecommend.adapter = adaptor
         }
     }
 
@@ -187,9 +201,12 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
             }
             if(filteredList.isEmpty()){
                 Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show()
+                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+                recyclerViewOthers.adapter = adaptor
             }
             else{
-                adaptor.setFilteredList(filteredList)
+                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+                recyclerViewOthers.adapter = adaptor
             }
         }
     }

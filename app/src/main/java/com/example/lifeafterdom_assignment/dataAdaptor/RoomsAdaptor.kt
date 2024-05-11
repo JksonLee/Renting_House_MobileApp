@@ -46,8 +46,8 @@ class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener
         holder.tvRDHAddress.text = currentItem.address
     }
 
-    fun setFilteredList(roomsList: ArrayList<Rooms>){
-        this.roomsList = roomsList
+    fun setFilteredList(roomsList: List<Rooms>){
+        this.roomsList.addAll(roomsList)
         notifyDataSetChanged()
     }
 
