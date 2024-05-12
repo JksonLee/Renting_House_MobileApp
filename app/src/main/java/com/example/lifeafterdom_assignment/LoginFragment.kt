@@ -20,8 +20,7 @@ class LoginFragment : Fragment() {
         val btnLogin: Button = view.findViewById(R.id.btnLogin)
 
         btnLogin.setOnClickListener() {
-            val action =
-                com.example.lifeafterdom_assignment.LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+            val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(1)
 
             Navigation.findNavController(view).navigate(action)
         }

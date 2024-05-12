@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_homeFragment_self"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="userID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/favoredFragment"
@@ -61,6 +64,9 @@
         <action
             android:id="@+id/action_favoredFragment_to_profilePageFragment"
             app:destination="@id/profilePageFragment" />
+        <argument
+            android:name="userID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/profilePageFragment"
@@ -82,6 +88,8 @@
         <action
             android:id="@+id/action_profilePageFragment_to_favoredFragment"
             app:destination="@id/favoredFragment" />
+        <argument android:name="userID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/roomDetailFragment"
@@ -93,6 +101,9 @@
             app:destination="@id/homeFragment" />
         <argument
             android:name="roomSelectedItem"
+            app:argType="integer" />
+        <argument
+            android:name="userID"
             app:argType="integer" />
     </fragment>
     <fragment

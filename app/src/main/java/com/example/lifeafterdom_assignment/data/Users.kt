@@ -5,5 +5,6 @@ data class Users (
     val name:String,
     val phone:String,
     val gender:String,
-    val address:String
+    val address:String,
+    val city:String
 )
