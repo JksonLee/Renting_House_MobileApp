@@ -1,6 +1,8 @@
 package com.example.lifeafterdom_assignment
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -20,11 +23,20 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.text.DecimalFormat
 import kotlin.properties.Delegates
 
 class RoomDetailFragment : Fragment() {
     // Database
     private lateinit var dbRef: DatabaseReference
+    private lateinit var imgRef : StorageReference
+
+    // Format
+    private var decimalFormat : DecimalFormat = DecimalFormat("RM ###,###.00")
+
     // Others
     private val args by navArgs<RoomDetailFragmentArgs>()
     private lateinit var filteredRoomDetailList : Rooms
@@ -107,8 +119,6 @@ class RoomDetailFragment : Fragment() {
                                 roomsSnap.child("description").value.toString(),
                                 roomsSnap.child("roommate").value.toString(),
                                 roomsSnap.child("agentID").value.toString().toInt()))
-                        }else{
-                            Toast.makeText(context, "No Similar Room Found", Toast.LENGTH_SHORT).show()
                         }
                     }
                     // Update List
@@ -117,9 +127,8 @@ class RoomDetailFragment : Fragment() {
                             filteredRoomDetailList = i
                         }
                     }
-
                     // Fetch Data Into Respective Place
-//                    val imgRDImg : ImageView = view.findViewById(R.id.imgRDImg)
+                    val imgRDImg : ImageView = view!!.findViewById(R.id.imgRDImg)
                     val tvRDName : TextView = view!!.findViewById(R.id.tvRDName)
                     val tvRDAddress : TextView = view!!.findViewById(R.id.tvRDAddress)
                     val tvRDPrice : TextView = view!!.findViewById(R.id.tvRDPrice)
@@ -127,10 +136,26 @@ class RoomDetailFragment : Fragment() {
                     val tvRDRoommate : TextView = view!!.findViewById(R.id.tvRDRoommate)
                     val tvRDDiscription : TextView = view!!.findViewById(R.id.tvRDDiscription)
 
-//                    imgRDImg.setImageResource(selectedByIDRoom.image)
+
+                    // Retrieve Image
+                    imgRef = FirebaseStorage.getInstance().getReference("images/room$selectedRoomID.png")
+                    val localFile : File = File.createTempFile("temp", "png")
+                    imgRef.getFile(localFile).addOnSuccessListener {
+                        val bitmap : Bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+
+                        imgRDImg.setImageBitmap(bitmap)
+                    }.addOnFailureListener{
+                        imgRef = FirebaseStorage.getInstance().getReference("images/empty_Image.png")
+                        val file : File = File.createTempFile("temp", "png")
+                        imgRef.getFile(file).addOnSuccessListener {
+                            val bitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
+
+                            imgRDImg.setImageBitmap(bitmap)
+                        }
+                    }
                     tvRDName.text = filteredRoomDetailList.name
                     tvRDAddress.text = filteredRoomDetailList.address
-                    tvRDPrice.text = "RM " + filteredRoomDetailList.price.toString()
+                    tvRDPrice.text = decimalFormat.format(filteredRoomDetailList.price)
                     tvRDType.text = filteredRoomDetailList.type
                     tvRDRoommate.text = filteredRoomDetailList.roommate
                     tvRDDiscription.text = filteredRoomDetailList.description
@@ -205,20 +230,18 @@ class RoomDetailFragment : Fragment() {
 
     // Retrieve Agent Phone Number
     private fun retrieveAgentPhoneNumberByID(agentID : Int){
-        dbRef = FirebaseDatabase.getInstance().getReference("Agents")
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
                     var phoneNumber = ""
                     for(roomsSnap in snapshot.children){
-                        if(roomsSnap.child("agentID").value.toString() == agentID.toString()){
+                        if(roomsSnap.child("userID").value.toString() == agentID.toString()){
                             phoneNumber = roomsSnap.child("phone").value.toString()
 
-                        }else{
-                            Toast.makeText(context, "No Similar Agent Found", Toast.LENGTH_SHORT).show()
                         }
                     }
-
+                    // Intent to Message
                     val url = Uri.parse("sms:$phoneNumber")
                     val intent = Intent(Intent.ACTION_VIEW, url)
                     startActivity(intent)

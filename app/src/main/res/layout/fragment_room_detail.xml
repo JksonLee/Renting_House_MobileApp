@@ -24,6 +24,7 @@
         android:id="@+id/ibtnBack"
         android:layout_width="47dp"
         android:layout_height="41dp"
+        android:layout_marginTop="-5dp"
         android:background="@android:drawable/divider_horizontal_dark"
         android:src="?attr/homeAsUpIndicator"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -35,91 +36,99 @@
 
     <ImageView
         android:id="@+id/imgRDImg"
+        android:layout_width="378dp"
+        android:layout_height="214dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvRDName"
+        android:layout_width="63dp"
+        android:layout_height="45dp"
+        android:text="PV 10"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.434" />
+
+    <TextView
+        android:id="@+id/tvRDAddress"
         android:layout_width="376dp"
-        android:layout_height="122dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:text="Room Address"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.121"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tvRDName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Room Name"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgRDImg" />
-
-    <TextView
-        android:id="@+id/tvRDAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Room Address"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRDName" />
+        app:layout_constraintVertical_bias="0.505" />
 
     <TextView
         android:id="@+id/tvRDPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="40dp"
-        android:text="Room Price"
+        android:layout_marginBottom="13dp"
+        android:text="RM 400.50"
+        android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/divider1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRDAddress" />
+        app:layout_constraintTop_toTopOf="@+id/divider1"
+        app:layout_constraintVertical_bias="0.941" />
 
     <TextView
         android:id="@+id/tvRDDiscription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="362dp"
+        android:layout_height="137dp"
         android:text="Room Discription"
+        android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRDPrice" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833" />
 
     <TextView
         android:id="@+id/tvRDRoommate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Roommate"
+        android:text="Male"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvRDType"
+        app:layout_constraintBottom_toBottomOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintHorizontal_bias="0.864"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvRDType"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/divider2"
+        app:layout_constraintVertical_bias="0.533" />
 
     <Button
         android:id="@+id/btnContact"
-        android:layout_width="340dp"
-        android:layout_height="76dp"
+        android:layout_width="343dp"
+        android:layout_height="62dp"
+        android:background="@drawable/custom_agent_contact_button"
         android:text="Contact Agent"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/custom_agent_contact_button"
-        android:textColor="@color/white"
-        app:layout_constraintVertical_bias="0.975" />
+        app:layout_constraintVertical_bias="0.976" />
 
     <View
         android:id="@+id/divider"
@@ -128,37 +137,35 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRDAddress"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <View
         android:id="@+id/divider1"
         android:layout_width="1dp"
-        android:layout_height="70dp"
+        android:layout_height="52dp"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="2dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintBottom_toBottomOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.293"
+        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/divider2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/divider2"
         android:layout_width="1dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="2dp"
+        android:layout_height="52dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.655"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toEndOf="@+id/divider1"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/divider3"
@@ -186,28 +193,28 @@
 
     <ImageButton
         android:id="@+id/ibtnFavored"
-        android:layout_width="37dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="44dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:background="@android:drawable/divider_horizontal_dark"
         android:src="@android:drawable/star_big_off"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <TextView
         android:id="@+id/tvRDType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Room Type"
+        android:text="Single"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvRDPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/divider1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvRDPrice"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/divider1"
+        app:layout_constraintVertical_bias="0.527" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.lifeafterdom_assignment.dataAdaptor
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +10,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.R
 import com.example.lifeafterdom_assignment.data.Rooms
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.text.DecimalFormat
 
 class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener: OnItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+    // Database
+    private lateinit var imgRef : StorageReference
+    private var decimalFormat : DecimalFormat = DecimalFormat("RM ###,###.00")
 
     inner class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val imgRDHRoomImg : ImageView = itemView.findViewById(R.id.imgRDHRoomImg)
@@ -40,9 +49,23 @@ class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener
 
     override fun onBindViewHolder(holder: RoomsDisplayHolder, position: Int) {
         val currentItem = roomsList[position]
-//        holder.imgRDHRoomImg.setImageResource(currentItem.image)
+        imgRef = FirebaseStorage.getInstance().getReference("images/room${currentItem.roomID}.png")
+        val localFile : File = File.createTempFile("temp", "png")
+        imgRef.getFile(localFile).addOnSuccessListener {
+            val bitmap : Bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+
+            holder.imgRDHRoomImg.setImageBitmap(bitmap)
+        }.addOnFailureListener{
+            imgRef = FirebaseStorage.getInstance().getReference("images/empty_Image.png")
+            val file : File = File.createTempFile("temp", "png")
+            imgRef.getFile(file).addOnSuccessListener {
+                val bitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
+
+                holder.imgRDHRoomImg.setImageBitmap(bitmap)
+            }
+        }
         holder.tvRDHRoomName.text = currentItem.name
-        holder.tvRDHPrice.text = "RM " + currentItem.price.toString()
+        holder.tvRDHPrice.text = decimalFormat.format(currentItem.price)
         holder.tvRDHAddress.text = currentItem.address
     }
 
