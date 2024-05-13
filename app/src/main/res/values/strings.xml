@@ -11,4 +11,23 @@
         <item> RM800 to RM1000 </item>
         <item> Above RM1000 </item>
     </string-array>
+    <string-array name="countryList">
+        <item> Malaysia </item>
+    </string-array>
+    <string-array name="stateList">
+        <item> Kuala Lumpur  </item>
+        <item> Ipoh </item>
+        <item> Johor </item>
+        <item> Kedah </item>
+        <item> Malacca </item>
+        <item> Pahang </item>
+        <item> Penang </item>
+        <item> Perak </item>
+    </string-array>
+    <string name="date_format">%d-%02d-%02d</string>
+    <string-array name="userGenderList">
+        <item> Male </item>
+        <item> Female </item>
+        <item> Other </item>
+    </string-array>
 </resources>

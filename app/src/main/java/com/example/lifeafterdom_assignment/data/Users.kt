@@ -6,5 +6,6 @@ data class Users (
     val phone:String,
     val gender:String,
     val address:String,
-    val city:String
+    val city:String,
+    val password:String
 )
