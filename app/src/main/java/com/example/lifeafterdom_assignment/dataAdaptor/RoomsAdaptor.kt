@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lifeafterdom_assignment.R
 import com.example.lifeafterdom_assignment.data.Rooms
 
-class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener: onItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
+class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener: OnItemClickListener): RecyclerView.Adapter <RoomsAdaptor.RoomsDisplayHolder>() {
 
     inner class RoomsDisplayHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val imgRDHRoomImg : ImageView = itemView.findViewById(R.id.imgRDHRoomImg)
@@ -46,7 +46,7 @@ class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener
         holder.tvRDHAddress.text = currentItem.address
     }
 
-    interface onItemClickListener{
+    interface OnItemClickListener{
         fun itemClick(position: Int)
     }
 }

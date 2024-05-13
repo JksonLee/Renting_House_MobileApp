@@ -23,117 +23,105 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 import java.util.Locale
 import kotlin.properties.Delegates
 
-class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
-    private lateinit var searchRoom : SearchView
+class HomeFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
+    // Database
+    private lateinit var dbRef: DatabaseReference
+    // Adaptor
+    private lateinit var adaptor : RoomsAdaptor
+    // Others
     private lateinit var recyclerViewRecommend : RecyclerView
     private lateinit var recyclerViewOthers : RecyclerView
-    private lateinit var adaptor : RoomsAdaptor
     private lateinit var roomListRecommend : ArrayList<Rooms>
     private lateinit var roomListOthers : ArrayList<Rooms>
-    private lateinit var dbRef: DatabaseReference
+    private lateinit var searchRoom : SearchView
     private val args by navArgs<HomeFragmentArgs>()
     private var userID by Delegates.notNull<Int>()
-    private lateinit var userAddress : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        // Catch Data from Previous
+        // ----------------------------------------------- Previous Argument ----------------------------------------------- //
         userID  = args.userID
 
-        // Navigation Button and Functions
+
+        // -------------------------------------------------- Navigation -------------------------------------------------- //
         val btnHome : Button = view.findViewById(R.id.btnHomePage)
         val btnFavored : Button = view.findViewById(R.id.btnFavored)
         val btnProfile : Button = view.findViewById(R.id.btnProfile)
 
+        // Navigation : To Home Page
         btnHome.setOnClickListener{
             val action = HomeFragmentDirections.actionHomeFragmentSelf(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
+        // Navigation : To Favored Page
         btnFavored.setOnClickListener{
             val action = HomeFragmentDirections.actionHomeFragmentToFavoredFragment(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
+        // Navigation : To Profile Page
         btnProfile.setOnClickListener{
             val action = HomeFragmentDirections.actionHomeFragmentToProfilePageFragment(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
-        // Filter Option
+
+        // ------------------------------------------------- Retrieve Data ------------------------------------------------- //
+        // Display Recommended RecycleView
+        recyclerViewRecommend = view.findViewById(R.id.rvHRecommend)
+        recyclerViewRecommend.layoutManager = LinearLayoutManager(context)
+        recyclerViewRecommend.setHasFixedSize(true)
+        roomListRecommend = arrayListOf()
+
+        // Fetch Data Into RecyclerView
+        fetchDataFromDatabase()
+
+        // Display Others RecycleView
+        recyclerViewOthers = view.findViewById(R.id.rvHRoom)
+        searchRoom = view.findViewById(R.id.svRoom)
+        recyclerViewOthers.layoutManager = LinearLayoutManager(context)
+        recyclerViewOthers.setHasFixedSize(true)
+        roomListOthers = arrayListOf()
+
+        // Fetch Data Into RecyclerView
+        fetchDataToOthersList()
+
+
+        // ------------------------------------------------- Function Part ------------------------------------------------- //
         val spGender : Spinner = view.findViewById(R.id.spGender)
         val spBudget : Spinner = view.findViewById(R.id.spBudget)
 
-        // Filter By Roommate Gender
+        // Function : Spinner Item Change
         spGender.onItemSelectedListener = object : OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 filterBySpinner(spGender.selectedItem.toString(),spBudget.selectedItem.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(context, "No Record", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Filter By Budget
+        // Function : Spinner Item Change
         spBudget.onItemSelectedListener = object : OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 filterBySpinner(spGender.selectedItem.toString(),spBudget.selectedItem.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(context, "No Record", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Display Recycle View of Others (Using Another Method to do recycle view)
-        recyclerViewRecommend = view.findViewById(R.id.rvHRecommend)
-
-        recyclerViewRecommend.setLayoutManager(LinearLayoutManager(context))
-        recyclerViewRecommend.setHasFixedSize(true)
-
-        roomListRecommend = arrayListOf()
-
-        // Add Record Into RecyclerView
-        fetchDataFromDatabase()
-
-
-
-        // Others
-        // Display Recycle View of Others
-        recyclerViewOthers = view.findViewById(R.id.rvHRoom)
-        searchRoom = view.findViewById(R.id.svRoom)
-
-        recyclerViewOthers.setLayoutManager(LinearLayoutManager(context))
-        recyclerViewOthers.setHasFixedSize(true)
-
-        roomListOthers = arrayListOf()
-
-        // Add Record Into RecyclerView
-        fetchDataToOthersList()
-
-        // Search Room Name
+        // Function : Search Room Name
         searchRoom.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -145,7 +133,7 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
             }
         })
 
-        // CLear All Option
+        // Function : Clear All Filter Option
         val btnClear : Button = view.findViewById(R.id.btnClear)
 
         btnClear.setOnClickListener{
@@ -158,9 +146,8 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
     }
 
 
-    // ======================================================================================================================= //
-    // Function
-    // Filter By Address
+    // ====================================================== Function ====================================================== //
+    // Retrieve Data From Database for Recommended RecycleView
     private fun fetchDataFromDatabase(){
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         dbRef.addValueEventListener(object: ValueEventListener {
@@ -174,25 +161,25 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     roomListRecommend.clear()
                                     if(snapshot.exists()) {
-                                        for(roomsSnap in snapshot.children){
-                                            if(roomsSnap.child("address").value.toString().lowercase(Locale.ROOT).contains(city.lowercase())){
-                                                roomListRecommend.add(Rooms(roomsSnap.child("roomID").value.toString().toInt(),
-                                                    roomsSnap.child("name").value.toString(),
-                                                    roomsSnap.child("address").value.toString(),
-                                                    roomsSnap.child("price").value.toString().toDouble(),
-                                                    roomsSnap.child("type").value.toString(),
-                                                    roomsSnap.child("description").value.toString(),
-                                                    roomsSnap.child("roommate").value.toString(),
-                                                    roomsSnap.child("agentID").value.toString().toInt()))
+                                        for(rooms in snapshot.children){
+                                            if(rooms.child("address").value.toString().lowercase(Locale.ROOT).contains(city.lowercase())){
+                                                roomListRecommend.add(Rooms(rooms.child("roomID").value.toString().toInt(),
+                                                    rooms.child("name").value.toString(),
+                                                    rooms.child("address").value.toString(),
+                                                    rooms.child("price").value.toString().toDouble(),
+                                                    rooms.child("type").value.toString(),
+                                                    rooms.child("description").value.toString(),
+                                                    rooms.child("roommate").value.toString(),
+                                                    rooms.child("agentID").value.toString().toInt()))
                                             }else{
-                                                Toast.makeText(context, "No Record", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "No Room Are Near By Your City", Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                         // Update List
                                         adaptor = RoomsAdaptor(roomListRecommend, this@HomeFragment)
                                         recyclerViewRecommend.adapter = adaptor
                                     }else{
-//                                        Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Database No Room Record", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                                 override fun onCancelled(error: DatabaseError) {
@@ -200,12 +187,12 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                                 }
                             })
                         }else{
-//                            Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "No Similar User Found", Toast.LENGTH_SHORT).show()
                         }
                     }
                     fetchDataToOthersList()
                 }else {
-//                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database No User Record", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -214,7 +201,7 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
         })
     }
 
-    // Add new Record into Others RecyclerView
+    // Retrieve Data From Database for Others RecycleView
     private fun fetchDataToOthersList(){
         dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
         dbRef.addValueEventListener(object: ValueEventListener{
@@ -235,7 +222,7 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                     adaptor = RoomsAdaptor(roomListOthers, this@HomeFragment)
                     recyclerViewOthers.adapter = adaptor
                 }else {
-//                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database No Room Record", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -244,66 +231,66 @@ class HomeFragment : Fragment(), RoomsAdaptor.onItemClickListener {
         })
     }
 
-    // Filter RecyclerView Record By Name
+    // Filter Data By Name
     private fun filterByName(newText : String){
-        if(newText != null){
-            val filteredList = ArrayList<Rooms>()
-            for(i in roomListOthers){
-                if(i.name.lowercase(Locale.ROOT).contains(newText.lowercase())){
-                    filteredList.add(i)
-                }
+        val filteredList = ArrayList<Rooms>()
+        for(i in roomListOthers){
+            if(i.name.lowercase(Locale.ROOT).contains(newText.lowercase())){
+                filteredList.add(i)
             }
-            if(filteredList.isEmpty()){
-                Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show()
-                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
-                recyclerViewOthers.adapter = adaptor
-            }
-            else{
-                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
-                recyclerViewOthers.adapter = adaptor
-            }
+        }
+        if(filteredList.isEmpty()){
+            Toast.makeText(context, "No Similar Room Name Found", Toast.LENGTH_SHORT).show()
+            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+            recyclerViewOthers.adapter = adaptor
+        }
+        else{
+            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+            recyclerViewOthers.adapter = adaptor
         }
     }
 
-    // Filter By Gender and Budget
+    // Filter Data By Gender and Budget
     private fun filterBySpinner(roommate : String, budget : String){
-        if(roommate != null && budget != null){
-            val gender : String
-            val min : Double
-            val max : Double
-            if(roommate == "Male Roommate"){
-                gender = "male"
-            }else{
-                gender = "female"
-            }
-            if(budget == "Less Than RM500"){
+        val min : Double
+        val max : Double
+        val gender : String = if(roommate == "Male Roommate"){
+            "male"
+        }else{
+            "female"
+        }
+        when (budget) {
+            "Less Than RM500" -> {
                 min = 0.00
                 max = 500.00
-            }else if(budget == "RM500 to RM799"){
+            }
+            "RM500 to RM799" -> {
                 min = 500.00
                 max = 800.00
-            }else if(budget == "RM800 to RM1000"){
+            }
+            "RM800 to RM1000" -> {
                 min = 800.00
                 max = 1000.01
-            }else {
+            }
+            else -> {
                 min = 1000.01
                 max = 9999.99
             }
-            val filteredList = ArrayList<Rooms>()
-            for (i in roomListOthers) {
-                if ((i.roommate.lowercase(Locale.ROOT).equals(gender.lowercase())) &&
-                    (i.price >= min) && (i.price < max)) {
-                    filteredList.add(i)
-                }
+        }
+        val filteredList = ArrayList<Rooms>()
+        for (i in roomListOthers) {
+            if ((i.roommate.lowercase(Locale.ROOT) == gender.lowercase()) &&
+                (i.price >= min) && (i.price < max)) {
+                filteredList.add(i)
             }
-            if (filteredList.isEmpty()) {
-                Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show()
-                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
-                recyclerViewOthers.adapter = adaptor
-            } else {
-                adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
-                recyclerViewOthers.adapter = adaptor
-            }
+        }
+        if (filteredList.isEmpty()) {
+            Toast.makeText(context, "No Similar Requirement Room Found", Toast.LENGTH_SHORT).show()
+            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+            recyclerViewOthers.adapter = adaptor
+        } else {
+            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+            recyclerViewOthers.adapter = adaptor
         }
     }
 

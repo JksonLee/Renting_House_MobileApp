@@ -1,10 +1,8 @@
 package com.example.lifeafterdom_assignment
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.SmsManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,58 +20,64 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.Locale
 import kotlin.properties.Delegates
 
 class RoomDetailFragment : Fragment() {
-    private val args by navArgs<RoomDetailFragmentArgs>()
+    // Database
     private lateinit var dbRef: DatabaseReference
+    // Others
+    private val args by navArgs<RoomDetailFragmentArgs>()
     private lateinit var filteredRoomDetailList : Rooms
     private lateinit var roomDetailList : ArrayList<Rooms>
+    private lateinit var ibtnFavored : ImageButton
     private var userID by Delegates.notNull<Int>()
+    private var agentID by Delegates.notNull<Int>()
     private var selectedRoomID by Delegates.notNull<Int>()
     private var totalRecord : Int = 0
-    private lateinit var ibtnFavored : ImageButton
     private var favoredExistsID : Int = 0
-    private var agentID by Delegates.notNull<Int>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_room_detail, container, false)
-
-        // Catch Data from Previous
+        // ----------------------------------------------- Previous Argument ----------------------------------------------- //
         selectedRoomID  = args.roomSelectedItem
         userID  = args.userID
 
-        // Change Button
-        checkFavoredButton(selectedRoomID)
 
-        // Back Navigation
+        // -------------------------------------------------- Navigation -------------------------------------------------- //
         val ibtnBack : ImageButton = view.findViewById(R.id.ibtnBack)
 
+        // Navigation : To Home Page
         ibtnBack.setOnClickListener{
             val action = RoomDetailFragmentDirections.actionRoomDetailFragmentToHomeFragment(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
-        // Fetch Data From Database
+
+        // ------------------------------------------------- Retrieve Data ------------------------------------------------- //
+        // Display Selected Room Details
         roomDetailList = arrayListOf()
 
-        addRecord(selectedRoomID)
+        // Fetch Data
+        fetchRecord(selectedRoomID)
 
 
-        // Add To Favored
+        // ------------------------------------------------- Function Part ------------------------------------------------- //
+        // Change Button Image
+        checkFavoredButton(selectedRoomID)
+
+        // Function : Add or Remove Favored
         ibtnFavored = view.findViewById(R.id.ibtnFavored)
 
         ibtnFavored.setOnClickListener{
             addRoomToFavored(selectedRoomID)
         }
 
-
-        // Message To Agent
+        // Function : Message To Agent
         val btnContact : Button = view.findViewById(R.id.btnContact)
 
         btnContact.setOnClickListener{
@@ -84,10 +88,9 @@ class RoomDetailFragment : Fragment() {
     }
 
 
-    // ======================================================================================================================= //
-    // Function
-    // Retrieve Data From Database
-    private fun addRecord(selectedRoomID : Int){
+    // ====================================================== Function ====================================================== //
+    // Retrieve Data From Database for Selected Room Details
+    private fun fetchRecord(selectedRoomID : Int){
         dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -105,10 +108,9 @@ class RoomDetailFragment : Fragment() {
                                 roomsSnap.child("roommate").value.toString(),
                                 roomsSnap.child("agentID").value.toString().toInt()))
                         }else{
-                            Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "No Similar Room Found", Toast.LENGTH_SHORT).show()
                         }
                     }
-
                     // Update List
                     for(i in roomDetailList){
                         if(i.roomID.toString().contains(selectedRoomID.toString())) {
@@ -116,7 +118,7 @@ class RoomDetailFragment : Fragment() {
                         }
                     }
 
-                    // Display Information
+                    // Fetch Data Into Respective Place
 //                    val imgRDImg : ImageView = view.findViewById(R.id.imgRDImg)
                     val tvRDName : TextView = view!!.findViewById(R.id.tvRDName)
                     val tvRDAddress : TextView = view!!.findViewById(R.id.tvRDAddress)
@@ -133,7 +135,7 @@ class RoomDetailFragment : Fragment() {
                     tvRDRoommate.text = filteredRoomDetailList.roommate
                     tvRDDiscription.text = filteredRoomDetailList.description
                 }else {
-//                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database No Room Record", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -141,7 +143,7 @@ class RoomDetailFragment : Fragment() {
             }
         })}
 
-    // Insert Favored Record Into Database
+    // Insert or Delete Favored Record from Database
     private fun addRoomToFavored(roomID : Int){
         // Check Record Into Favored Table
         if(favoredExistsID > 0){
@@ -213,7 +215,7 @@ class RoomDetailFragment : Fragment() {
                             phoneNumber = roomsSnap.child("phone").value.toString()
 
                         }else{
-                            Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "No Similar Agent Found", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -221,7 +223,7 @@ class RoomDetailFragment : Fragment() {
                     val intent = Intent(Intent.ACTION_VIEW, url)
                     startActivity(intent)
                 }else {
-//                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database No Agent Record", Toast.LENGTH_SHORT).show()
                 }
             }
 

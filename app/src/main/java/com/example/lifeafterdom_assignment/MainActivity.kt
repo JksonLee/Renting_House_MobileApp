@@ -2,13 +2,7 @@ package com.example.lifeafterdom_assignment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import com.example.lifeafterdom_assignment.data.Agents
-import com.example.lifeafterdom_assignment.data.Favoreds
-import com.example.lifeafterdom_assignment.data.Rooms
-import com.example.lifeafterdom_assignment.data.Users
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var dbRef: DatabaseReference

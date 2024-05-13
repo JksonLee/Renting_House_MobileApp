@@ -22,11 +22,14 @@ import com.google.firebase.database.ValueEventListener
 import kotlin.properties.Delegates
 
 
-class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
-    private lateinit var recyclerViewFavored : RecyclerView
-    private lateinit var adaptor : RoomsAdaptor
-    private lateinit var roomListFavored : ArrayList<Rooms>
+class FavoredFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
+    // Database
     private lateinit var dbRef: DatabaseReference
+    // Adaptor
+    private lateinit var adaptor : RoomsAdaptor
+    //Others
+    private lateinit var recyclerViewFavored : RecyclerView
+    private lateinit var roomListFavored : ArrayList<Rooms>
     private val args by navArgs<FavoredFragmentArgs>()
     private var userID by Delegates.notNull<Int>()
 
@@ -35,27 +38,30 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_favored, container, false)
-
-        // Catch Data from Previous
+        // ----------------------------------------------- Previous Argument ----------------------------------------------- //
         userID = args.userID
 
-        // Navigation Button
+
+        // -------------------------------------------------- Navigation -------------------------------------------------- //
         val btnHome : Button = view.findViewById(R.id.btnHomePage)
         val btnFavored : Button = view.findViewById(R.id.btnFavored)
         val btnProfile : Button = view.findViewById(R.id.btnProfile)
 
+        // Navigation : To Home Page
         btnHome.setOnClickListener{
             val action = FavoredFragmentDirections.actionFavoredFragmentToHomeFragment(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
+        // Navigation : To Favored Page
         btnFavored.setOnClickListener{
             val action = FavoredFragmentDirections.actionFavoredFragmentSelf(userID)
 
             Navigation.findNavController(view).navigate(action)
         }
 
+        // Navigation : To Profile Page
         btnProfile.setOnClickListener{
             val action = FavoredFragmentDirections.actionFavoredFragmentToProfilePageFragment(userID)
 
@@ -63,25 +69,22 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
         }
 
 
-        // Favored
-        // Display User Favored List
+        // ------------------------------------------------- Retrieve Data ------------------------------------------------- //
+        // Display Favored RecycleView
         recyclerViewFavored = view.findViewById(R.id.rvFRoom)
-
         recyclerViewFavored.layoutManager = LinearLayoutManager(context)
         recyclerViewFavored.setHasFixedSize(true)
-
         roomListFavored = arrayListOf()
 
-        // Add Record Into RecyclerView
+        // Fetch Data Into RecyclerView
         fetchDataToFavoredList()
 
         return view
     }
 
 
-    // ======================================================================================================================= //
-    // Function
-    // Add new Record into Others RecyclerView
+    // ====================================================== Function ====================================================== //
+    // Retrieve Data From Database for Favored RecycleView
     private fun fetchDataToFavoredList(){
         dbRef = FirebaseDatabase.getInstance().getReference("Favoreds")
         dbRef.addValueEventListener(object: ValueEventListener {
@@ -95,25 +98,25 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     roomListFavored.clear()
                                     if(snapshot.exists()) {
-                                        for(roomsSnap in snapshot.children){
-                                            if(roomsSnap.child("roomID").value.toString().toInt() == roomID){
-                                                roomListFavored.add(Rooms(roomsSnap.child("roomID").value.toString().toInt(),
-                                                    roomsSnap.child("name").value.toString(),
-                                                    roomsSnap.child("address").value.toString(),
-                                                    roomsSnap.child("price").value.toString().toDouble(),
-                                                    roomsSnap.child("type").value.toString(),
-                                                    roomsSnap.child("description").value.toString(),
-                                                    roomsSnap.child("roommate").value.toString(),
-                                                    roomsSnap.child("agentID").value.toString().toInt()))
+                                        for(rooms in snapshot.children){
+                                            if(rooms.child("roomID").value.toString().toInt() == roomID){
+                                                roomListFavored.add(Rooms(rooms.child("roomID").value.toString().toInt(),
+                                                    rooms.child("name").value.toString(),
+                                                    rooms.child("address").value.toString(),
+                                                    rooms.child("price").value.toString().toDouble(),
+                                                    rooms.child("type").value.toString(),
+                                                    rooms.child("description").value.toString(),
+                                                    rooms.child("roommate").value.toString(),
+                                                    rooms.child("agentID").value.toString().toInt()))
                                             }else{
-                                                Toast.makeText(context, "No Record", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "No Similar Room Found", Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                         // Update List
                                         adaptor = RoomsAdaptor(roomListFavored, this@FavoredFragment)
                                         recyclerViewFavored.adapter = adaptor
                                     }else{
-//                                        Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Database No Room Record", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                                 override fun onCancelled(error: DatabaseError) {
@@ -121,11 +124,11 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
                                 }
                             })
                         }else{
-//                            Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "No Similar User Found", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else {
-//                    Toast.makeText(context, "No Data Found From Database", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Database No Favored Record", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -134,7 +137,7 @@ class FavoredFragment : Fragment(), RoomsAdaptor.onItemClickListener {
         })
     }
 
-    // Get Selected Item Position and Navigation
+    // Onclick RecycleView Item and Navigation
     override fun itemClick(position: Int) {
         val roomSelectedList = roomListFavored[position]
 
