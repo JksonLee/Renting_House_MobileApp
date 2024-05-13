@@ -140,6 +140,9 @@ class HomeFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
 
             adaptor = RoomsAdaptor(roomListOthers, this@HomeFragment)
             recyclerViewOthers.adapter = adaptor
+
+            adaptor = RoomsAdaptor(roomListRecommend, this@HomeFragment)
+            recyclerViewRecommend.adapter = adaptor
         }
 
         return view
@@ -273,19 +276,38 @@ class HomeFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
                 max = 9999.99
             }
         }
-        val filteredList = ArrayList<Rooms>()
-        for (i in roomListOthers) {
-            if ((i.roommate.lowercase(Locale.ROOT) == gender.lowercase()) &&
-                (i.price >= min) && (i.price < max)) {
-                filteredList.add(i)
+        val filteredListOfOthers = ArrayList<Rooms>()
+        val filteredListOfRecommended = ArrayList<Rooms>()
+
+        // Recommended List
+        if(roomListRecommend.isNotEmpty()){
+            filteredListOfRecommended.clear()
+            for (i in roomListRecommend) {
+                if ((i.roommate.lowercase(Locale.ROOT) == gender.lowercase()) &&
+                    (i.price >= min) && (i.price < max)) {
+                    filteredListOfRecommended.add(i)
+                }
             }
+            if (filteredListOfRecommended.isEmpty()) {
+                Toast.makeText(context, "Recommended No Similar Requirement Room Found", Toast.LENGTH_SHORT).show()
+            }
+            adaptor = RoomsAdaptor(filteredListOfRecommended, this@HomeFragment)
+            recyclerViewRecommend.adapter = adaptor
         }
-        if (filteredList.isEmpty()) {
-            Toast.makeText(context, "No Similar Requirement Room Found", Toast.LENGTH_SHORT).show()
-            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
-            recyclerViewOthers.adapter = adaptor
-        } else {
-            adaptor = RoomsAdaptor(filteredList, this@HomeFragment)
+
+        // Others List
+        if(roomListOthers.isNotEmpty()){
+            filteredListOfOthers.clear()
+            for (i in roomListOthers) {
+                if ((i.roommate.lowercase(Locale.ROOT) == gender.lowercase()) &&
+                    (i.price >= min) && (i.price < max)) {
+                    filteredListOfOthers.add(i)
+                }
+            }
+            if (filteredListOfOthers.isEmpty()) {
+                Toast.makeText(context, "Others No Similar Requirement Room Found", Toast.LENGTH_SHORT).show()
+            }
+            adaptor = RoomsAdaptor(filteredListOfOthers, this@HomeFragment)
             recyclerViewOthers.adapter = adaptor
         }
     }
