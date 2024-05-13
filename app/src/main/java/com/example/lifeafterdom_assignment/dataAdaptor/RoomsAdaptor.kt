@@ -49,13 +49,20 @@ class RoomsAdaptor(private var roomsList: ArrayList<Rooms>, private val listener
 
     override fun onBindViewHolder(holder: RoomsDisplayHolder, position: Int) {
         val currentItem = roomsList[position]
-//        imgRef = FirebaseStorage.getInstance().getReference("images/room$currentItem.png")
-        imgRef = FirebaseStorage.getInstance().getReference("images/room1.png")
+        imgRef = FirebaseStorage.getInstance().getReference("images/room${currentItem.roomID}.png")
         val localFile : File = File.createTempFile("temp", "png")
         imgRef.getFile(localFile).addOnSuccessListener {
             val bitmap : Bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
 
             holder.imgRDHRoomImg.setImageBitmap(bitmap)
+        }.addOnFailureListener{
+            imgRef = FirebaseStorage.getInstance().getReference("images/empty_Image.png")
+            val file : File = File.createTempFile("temp", "png")
+            imgRef.getFile(file).addOnSuccessListener {
+                val bitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
+
+                holder.imgRDHRoomImg.setImageBitmap(bitmap)
+            }
         }
         holder.tvRDHRoomName.text = currentItem.name
         holder.tvRDHPrice.text = decimalFormat.format(currentItem.price)

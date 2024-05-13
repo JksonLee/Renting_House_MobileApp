@@ -138,12 +138,20 @@ class RoomDetailFragment : Fragment() {
 
 
                     // Retrieve Image
-                    imgRef = FirebaseStorage.getInstance().getReference("images/room1.png")
+                    imgRef = FirebaseStorage.getInstance().getReference("images/room$selectedRoomID.png")
                     val localFile : File = File.createTempFile("temp", "png")
                     imgRef.getFile(localFile).addOnSuccessListener {
                         val bitmap : Bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
 
                         imgRDImg.setImageBitmap(bitmap)
+                    }.addOnFailureListener{
+                        imgRef = FirebaseStorage.getInstance().getReference("images/empty_Image.png")
+                        val file : File = File.createTempFile("temp", "png")
+                        imgRef.getFile(file).addOnSuccessListener {
+                            val bitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
+
+                            imgRDImg.setImageBitmap(bitmap)
+                        }
                     }
                     tvRDName.text = filteredRoomDetailList.name
                     tvRDAddress.text = filteredRoomDetailList.address
