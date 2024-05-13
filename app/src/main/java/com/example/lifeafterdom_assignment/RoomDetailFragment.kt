@@ -230,13 +230,13 @@ class RoomDetailFragment : Fragment() {
 
     // Retrieve Agent Phone Number
     private fun retrieveAgentPhoneNumberByID(agentID : Int){
-        dbRef = FirebaseDatabase.getInstance().getReference("Agents")
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
                     var phoneNumber = ""
                     for(roomsSnap in snapshot.children){
-                        if(roomsSnap.child("agentID").value.toString() == agentID.toString()){
+                        if(roomsSnap.child("userID").value.toString() == agentID.toString()){
                             phoneNumber = roomsSnap.child("phone").value.toString()
 
                         }
