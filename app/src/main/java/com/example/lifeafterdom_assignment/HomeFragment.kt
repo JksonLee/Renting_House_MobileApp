@@ -171,8 +171,6 @@ class HomeFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
                                                     rooms.child("description").value.toString(),
                                                     rooms.child("roommate").value.toString(),
                                                     rooms.child("agentID").value.toString().toInt()))
-                                            }else{
-                                                Toast.makeText(context, "No Room Are Near By Your City", Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                         // Update List
@@ -186,8 +184,6 @@ class HomeFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
                                     Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
                                 }
                             })
-                        }else{
-                            Toast.makeText(context, "No Similar User Found", Toast.LENGTH_SHORT).show()
                         }
                     }
                     fetchDataToOthersList()
