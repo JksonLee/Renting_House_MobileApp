@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".AddNewRoomFragment">
+    tools:context=".EditPropertyFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:context=".EditPropertyFragment"
         android:background="@color/light_grey">
 
         <Button
-            android:id="@+id/CancelNewRoomBtn"
+            android:id="@+id/CancelEditBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
             android:text="Cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RoomGenderSpinner"
-            app:layout_constraintVertical_bias="0.326" />
+            app:layout_constraintTop_toBottomOf="@+id/tvPreferGender" />
 
         <View
             android:id="@+id/view3"
@@ -80,7 +80,7 @@
             app:srcCompat="@drawable/baseline_home_24" />
 
         <ImageView
-            android:id="@+id/UserPropertyImg"
+            android:id="@+id/addImageProperty"
             android:layout_width="210dp"
             android:layout_height="100dp"
             android:layout_marginTop="30dp"
@@ -102,20 +102,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/UserPropertyImg" />
-
-        <Spinner
-            android:id="@+id/RoomTypeSpinner"
-            android:layout_width="308dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/grey_border_arrow_down"
-            android:entries="@array/roomType"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+            app:layout_constraintTop_toBottomOf="@+id/addImageProperty" />
 
         <TextView
             android:id="@+id/textView37"
@@ -130,24 +117,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RoomTypeSpinner" />
-
-        <EditText
-            android:id="@+id/etRoomName"
-            android:layout_width="300dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="70dp"
-            android:ems="10"
-            android:hint="Your Room Name"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView37" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomType" />
 
         <TextView
             android:id="@+id/textView38"
@@ -160,26 +130,9 @@
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.035"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etRoomName" />
-
-        <EditText
-            android:id="@+id/etDescription"
-            android:layout_width="300dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="70dp"
-            android:ems="10"
-            android:hint="Your Room Description"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomName" />
 
         <TextView
             android:id="@+id/textView39"
@@ -192,49 +145,21 @@
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.375"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDescription" />
-
-        <EditText
-            android:id="@+id/etRoomAddress"
-            android:layout_width="300dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="70dp"
-            android:ems="10"
-            android:hint="Your Room Address"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView39" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomDescription" />
 
         <TextView
             android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="20dp"
             android:text="Preferred tenant"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etRoomAddress" />
-
-        <Spinner
-            android:id="@+id/tvPreferGender"
-            android:layout_width="131dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/grey_border_arrow_down"
-            android:entries="@array/userGenderList"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomAddress" />
 
         <TextView
             android:id="@+id/textView41"
@@ -245,33 +170,121 @@
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintHorizontal_bias="0.305"
             app:layout_constraintStart_toEndOf="@+id/textView35"
-            app:layout_constraintTop_toBottomOf="@+id/etRoomAddress" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomAddress" />
 
-        <EditText
-            android:id="@+id/etRoomPrice"
+        <TextView
+            android:id="@+id/tvEditRoomPrice"
             android:layout_width="125dp"
             android:layout_height="41dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="56dp"
-            android:ems="10"
-            android:hint="Price"
-            android:inputType="text"
-            android:textColor="@color/black"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvPreferGender"
             app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
         <Button
             android:id="@+id/CreateNewRoomBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="52dp"
             android:text="Create"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/CancelNewRoomBtn"
-            app:layout_constraintTop_toBottomOf="@+id/etRoomPrice" />
+            app:layout_constraintStart_toEndOf="@+id/CancelEditBtn"
+            app:layout_constraintTop_toBottomOf="@+id/tvEditRoomPrice"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/DeleteRoomBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="@+id/view4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.882"
+            app:layout_constraintStart_toEndOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+        <TextView
+            android:id="@+id/tvEditRoomType"
+            android:layout_width="300dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+        <TextView
+            android:id="@+id/tvEditRoomName"
+            android:layout_width="300dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView37" />
+
+        <TextView
+            android:id="@+id/tvEditRoomDescription"
+            android:layout_width="300dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+        <TextView
+            android:id="@+id/tvEditRoomAddress"
+            android:layout_width="300dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.423"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView39" />
+
+        <TextView
+            android:id="@+id/tvPreferGender"
+            android:layout_width="125dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|fill_vertical"
+            android:paddingStart="10dp"
+            android:textColor="@color/darker_grey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

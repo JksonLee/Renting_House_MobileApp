@@ -59,6 +59,15 @@
             android:textColor="@color/white"
             android:text="Profile" />
 
+        <Button
+            android:id="@+id/btnProperty"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/rose_brown"
+            android:textColor="@color/white"
+            android:text="Property" />
+
     </LinearLayout>
 
     <TextView

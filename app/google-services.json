@@ -1,13 +1,33 @@
 {
   "project_info": {
-    "project_number": "646719352708",
-    "project_id": "lifeafterdom-assignment-af094",
-    "storage_bucket": "lifeafterdom-assignment-af094.appspot.com"
+    "project_number": "89349603985",
+    "firebase_url": "https://lifeafterdom-e7b41-default-rtdb.firebaseio.com",
+    "project_id": "lifeafterdom-e7b41",
+    "storage_bucket": "lifeafterdom-e7b41.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:646719352708:android:0bab05f95a791320f577d1",
+        "mobilesdk_app_id": "1:89349603985:android:573f8b14d4e3b061c27530",
+        "android_client_info": {
+          "package_name": "com.example.lifeafterdom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo4jUEAke-lZYtRH4kSOodufhCNQMOhKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89349603985:android:791d488d974d1c0bc27530",
         "android_client_info": {
           "package_name": "com.example.lifeafterdom_assignment"
         }
@@ -15,7 +35,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDQcf_1GLLhuO3AUAapRGBI3-VH6Iy5vj0"
+          "current_key": "AIzaSyDo4jUEAke-lZYtRH4kSOodufhCNQMOhKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89349603985:android:da706ea2e21c94adc27530",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo4jUEAke-lZYtRH4kSOodufhCNQMOhKQ"
         }
       ],
       "services": {

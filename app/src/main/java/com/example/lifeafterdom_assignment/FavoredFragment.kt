@@ -48,6 +48,13 @@ class FavoredFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
         val btnHome: Button = view.findViewById(R.id.btnHomePage)
         val btnFavored: Button = view.findViewById(R.id.btnFavored)
         val btnProfile: Button = view.findViewById(R.id.btnProfile)
+        val btnProperty : Button = view.findViewById(R.id.btnProperty)
+
+        btnProperty.setOnClickListener{
+            val action = FavoredFragmentDirections.actionFavoredFragmentToPropertyPageFragment(userID)
+
+            Navigation.findNavController(view).navigate(action)
+        }
 
         // Navigation : To Home Page
         btnHome.setOnClickListener {
@@ -92,6 +99,7 @@ class FavoredFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
         dbRef = FirebaseDatabase.getInstance().getReference("Favoreds")
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                roomListFavored.clear()
                 if (snapshot.exists()) {
                     for (roomsSnap in snapshot.children) {
                         if (roomsSnap.child("userID").value.toString().toInt() == userID) {
@@ -99,7 +107,6 @@ class FavoredFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
                             dbRef = FirebaseDatabase.getInstance().getReference("Rooms")
                             dbRef.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
-                                    roomListFavored.clear()
                                     if (snapshot.exists()) {
                                         for (rooms in snapshot.children) {
                                             if (rooms.child("roomID").value.toString().toInt() == roomID) {
@@ -115,8 +122,7 @@ class FavoredFragment : Fragment(), RoomsAdaptor.OnItemClickListener {
                                             }
                                         }
                                         // Update List
-                                        adaptor =
-                                            RoomsAdaptor(roomListFavored, this@FavoredFragment)
+                                        adaptor = RoomsAdaptor(roomListFavored, this@FavoredFragment)
                                         recyclerViewFavored.adapter = adaptor
                                     } else {
                                         Toast.makeText(

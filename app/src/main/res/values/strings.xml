@@ -16,18 +16,21 @@
     </string-array>
     <string-array name="stateList">
         <item> Kuala Lumpur  </item>
-        <item> Ipoh </item>
-        <item> Johor </item>
-        <item> Kedah </item>
-        <item> Malacca </item>
-        <item> Pahang </item>
-        <item> Penang </item>
-        <item> Perak </item>
     </string-array>
     <string name="date_format">%d-%02d-%02d</string>
     <string-array name="userGenderList">
         <item> Male </item>
         <item> Female </item>
         <item> Other </item>
+    </string-array>
+    <string-array name="roomType">
+        <item> Single </item>
+        <item> Medium </item>
+        <item> Master </item>
+    </string-array>
+    <string-array name="cityList">
+        <item> Wangsa Maju  </item>
+        <item> Setapak  </item>
+        <item> Bandar Damandara  </item>
     </string-array>
 </resources>

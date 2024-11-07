@@ -33,13 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="316dp"
             android:text="Name"
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -221,7 +221,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="70dp"
             android:ems="10"
-            android:hint="xxx-xxx xxxx"
+            android:hint="xxxxxxxxxx"
             android:inputType="phone"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -327,7 +327,7 @@
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.383"
+            app:layout_constraintHorizontal_bias="0.386"
             app:layout_constraintStart_toEndOf="@+id/textView16"
             app:layout_constraintTop_toBottomOf="@+id/etRegisterAddress" />
 
@@ -345,33 +345,56 @@
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/textView45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
+            android:text="City"
+            android:textColor="@color/dark_blue"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/CountrySpinner" />
+
+        <Spinner
+            android:id="@+id/CitySpinner"
+            android:layout_width="131dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/grey_border_arrow_down"
+            android:entries="@array/cityList"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="Zip Code"
             android:textColor="@color/dark_blue"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CountrySpinner" />
+            app:layout_constraintHorizontal_bias="0.476"
+            app:layout_constraintStart_toEndOf="@+id/textView45"
+            app:layout_constraintTop_toBottomOf="@+id/StateSpinner" />
 
         <EditText
             android:id="@+id/etZipCode"
             android:layout_width="100dp"
             android:layout_height="41dp"
-            android:layout_marginStart="70dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="242dp"
+            android:layout_marginEnd="92dp"
             android:ems="10"
             android:hint="Zip Code"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/CitySpinner"
             app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <TextView
@@ -393,6 +416,7 @@
             android:layout_width="100dp"
             android:layout_height="36dp"
             android:layout_marginTop="4dp"
+            android:entries="@array/userGenderList"
             app:layout_constraintBottom_toTopOf="@+id/textView12"
             app:layout_constraintEnd_toStartOf="@+id/etDateOfBirth"
             app:layout_constraintHorizontal_bias="0.714"

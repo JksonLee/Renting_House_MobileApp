@@ -7,16 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.navigation.Navigation
-import com.example.lifeafterdom_assignment.R
+import com.example.lifeafterdom_assignment.data.Users
+import com.google.firebase.database.*
 import java.util.Calendar
 
 class RegisterFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,14 +25,16 @@ class RegisterFragment : Fragment() {
         val etUserEmail: EditText = view.findViewById(R.id.etRegisterEmail)
         val etUserPassword: EditText = view.findViewById(R.id.etRegisterPassword)
         val etConfirmPassword: EditText = view.findViewById(R.id.etConfirmPassword)
-        val GenderSpinner: Spinner = view.findViewById(R.id.GenderSpinner)
+        val SpinnerGender: Spinner = view.findViewById(R.id.GenderSpinner)
         val etDateOfBirth: TextView = view.findViewById(R.id.etDateOfBirth)
         val etAddress: EditText = view.findViewById(R.id.etRegisterAddress)
-        val CountrySpinner: Spinner = view.findViewById(R.id.CountrySpinner)
-        val StateSpinner: Spinner = view.findViewById(R.id.StateSpinner)
+        val SpinnerCountry: Spinner = view.findViewById(R.id.CountrySpinner)
+        val SpinnerState: Spinner = view.findViewById(R.id.StateSpinner)
         val etPhoneNo: EditText = view.findViewById(R.id.etUserPhoneNo)
         val btnRegister: Button = view.findViewById(R.id.SignInBtn)
         val tvLoginAccount: TextView = view.findViewById(R.id.tvLoginAccount)
+        val SpinnerCity: Spinner = view.findViewById(R.id.CitySpinner)
+        val etZipCode: EditText = view.findViewById(R.id.etZipCode)
 
         // Set OnClickListener for the TextView
         etDateOfBirth.setOnClickListener {
@@ -51,9 +51,9 @@ class RegisterFragment : Fragment() {
                     // Update the TextView with the selected date
                     etDateOfBirth.text = getString(
                         R.string.date_format,
-                        selectedYear,
+                        selectedDay,
                         selectedMonth + 1,
-                        selectedDay
+                        selectedYear
                     )
                 },
                 year,
@@ -65,60 +65,83 @@ class RegisterFragment : Fragment() {
 
         btnRegister.setOnClickListener {
             val name = etName.text.toString()
-            val email = etUserEmail.text.toString()
-            val password = etUserPassword.text.toString()
-            val confirmPassword = etConfirmPassword.text.toString()
-            val phoneNo = etPhoneNo.text.toString()
-            val date = etDateOfBirth.text.toString()
+            val email = etUserEmail.text.toString().trim()
+            val password = etUserPassword.text.toString().trim()
+            val confirmPassword = etConfirmPassword.text.toString().trim()
+            val phoneNo = etPhoneNo.text.toString().trim()
+            val date = etDateOfBirth.text.toString().trim()
             val address = etAddress.text.toString()
-            val country : String = CountrySpinner.selectedItem.toString()
-            val state : String = StateSpinner.selectedItem.toString()
-            val gender : String = GenderSpinner.selectedItem.toString()
+            val country: String = SpinnerCountry.selectedItem.toString()
+            val state: String = SpinnerState.selectedItem.toString()
+            val gender: String = SpinnerGender.selectedItem.toString()
+            val city: String = SpinnerCity.selectedItem.toString()
+            val zip: String = etZipCode.text.toString().trim()
 
-            // Validate for Username field
-            if (name.isEmpty()) {
-                etName.error = "Name is required"
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNo.isEmpty() || date.isEmpty() || address.isEmpty() || country.isEmpty() || state.isEmpty() || gender.isEmpty() || city.isEmpty() || zip.isEmpty()) {
+                if (name.isEmpty()) {
+                    etName.error = "Name is required"
+                }
+                if (email.isEmpty()) {
+                    etUserEmail.error = "Email is required"
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(requireContext(), "Please enter a valid email address.", Toast.LENGTH_SHORT).show()
+                } else if (email[0].isDigit()) {
+                    Toast.makeText(requireContext(), "Email address cannot start with a number.", Toast.LENGTH_SHORT).show()
+                }
+                if (password.isEmpty() || password.length < 6) {
+                    Toast.makeText(requireContext(), "Password must be at least 6 characters long.", Toast.LENGTH_SHORT).show()
+                } else if (!password.matches(Regex("^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\$%^&+=])(?=\\S+\$).{6,}\$"))) {
+                    Toast.makeText(requireContext(), "Password must contain at least 1 uppercase letter, 1 number, and 1 special character.", Toast.LENGTH_SHORT).show()
+                }
+                if (password != confirmPassword) {
+                    Toast.makeText(requireContext(), "Password and Retype Password do not match.", Toast.LENGTH_SHORT).show()
+                }
+                if (phoneNo.isEmpty()) {
+                    etPhoneNo.error = "Phone number is required"
+                }else if (!phoneNo.matches(Regex("^0[0-9]{10,11}$"))) {
+                    etPhoneNo.error = "Phone number must start with 0 and have 10 or 11 digits."
+                }
+
+                if (date.isEmpty()) {
+                    etDateOfBirth.error = "Date is required"
+                }
+                if (address.isEmpty()) {
+                    etAddress.error = "Address is required"
+                }
+                if (zip.isEmpty()) {
+                    etZipCode.error = "Zip Code is required"
+                } else if (zip.length != 5) {
+                    Toast.makeText(requireContext(), "The Zip Code should be 5 digits", Toast.LENGTH_SHORT).show()
+                }
                 return@setOnClickListener
             }
 
-            // Validate that all fields are filled
-            if (email.isEmpty()) {
-                etUserEmail.error = "Email is required"
-            }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(requireContext(), "Please enter a valid email address.", Toast.LENGTH_SHORT).show()
-            }else if(email[0].isDigit()) {
-                Toast.makeText(requireContext(), "Email address cannot start with a number.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val database = FirebaseDatabase.getInstance().getReference("Users")
 
-            // Validate that the password is at least 6 characters long
-            if (password.length < 6) {
-                Toast.makeText(requireContext(), "Password must be at least 6 characters long.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#\$%^&+=])(?=\\S+\$).{6,}\$".toRegex()
+            // Get the current highest user ID
+            database.get().addOnSuccessListener { snapshot ->
+                val lastUserID = snapshot.children.mapNotNull { it.key?.toIntOrNull() }.maxOrNull() ?: 0
+                val newUserID = lastUserID + 1
 
-            if (!passwordRegex.matches(password)) {
-                Toast.makeText(requireContext(), "Password must contain at least 1 uppercase letter, 1 number, 1 '@' or '_', and must be at least 6 characters long", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+                // Create a Users object with the provided data
+                val user = Users(newUserID, name, phoneNo, gender, address, country, state, city, zip, date, email, password)
 
-            // Validate that the password and retype password fields match
-            if (password != confirmPassword) {
-                Toast.makeText(requireContext(), "Password and Retype Password do not match.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                // Insert the user object into the Firebase database
+                database.child(newUserID.toString()).setValue(user).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(requireContext(), "User registered successfully!", Toast.LENGTH_SHORT).show()
+                        // Navigate to the login fragment
+                        Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to register user. Please try again.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to get the last user ID. Please try again.", Toast.LENGTH_SHORT).show()
             }
-
-            // You can add more specific validation for phone number if needed
-            if (phoneNo.isEmpty()) {
-                etPhoneNo.error = "Phone number is required"
-                return@setOnClickListener
-            }
-
-            // If all validations pass, proceed with your sign-in logic here
         }
 
-        tvLoginAccount.setOnClickListener(){
+        tvLoginAccount.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
